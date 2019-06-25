@@ -47,8 +47,8 @@ class NeuralNetwork(object):
         delta_weights_h_o = np.zeros(self.weights_hidden_to_output.shape)
         
         # MARK: just added these prints to see what the features look like..
-        print("FEATURES: \n", features)
-        print("TARGETS: \n", targets)
+#         print("FEATURES: \n", features)
+#         print("TARGETS: \n", targets)
         
         for X, y in zip(features, targets):
             
@@ -103,27 +103,29 @@ class NeuralNetwork(object):
         # MARK: I think this is (y - output)
         # MARK: CODE WRITTEN, NOT TESTED YET
         error = y - final_outputs # Output layer error is the difference between desired target and actual output.
-        
+#         print("FINAL OUTPUT: \n\n", final_outputs)
+#         print("WHAT WE WANTED\n\n", y)
+        print("ERROR\n\n", error)
         # TODO: Backpropagated error terms - Replace these values with your calculations.
         # ERROR TERM FORMULA: δo =(y− y^)f′(W⋅a)
         # a: Sigmoid Activation function
         # sigmoid function derivative = sigmoid`(x) = sigmoid`(x) * (1 - sigmoid`(x))
         # MARK: CODE WRITTEN, NOT TESTED YET
-        print("ERROR", error, "\n\n")
-        print("FINAL OUTPUTS", final_outputs, "\n\n")
-        print("DESIRED VALUE", y, "\n\n")
+#         print("ERROR", error, "\n\n")
+#         print("FINAL OUTPUTS", final_outputs, "\n\n")
+#         print("DESIRED VALUE", y, "\n\n")
         derivative_weights_final_output = (final_outputs * (1 - final_outputs))
-        print("DERIVATIVE WEIGHTS FINAL OUTPUT", derivative_weights_final_output, "\n\n\n") 
+#         print("DERIVATIVE WEIGHTS FINAL OUTPUT", derivative_weights_final_output, "\n\n\n") 
          
         output_error_term = error * derivative_weights_final_output
         
-        print("OUTPUT ERROR TERM:\n", output_error_term)
-        print("WEIGHTS HIDDEN TO OUTPUT:\n", self.weights_hidden_to_output)
+#         print("OUTPUT ERROR TERM:\n", output_error_term)
+#         print("WEIGHTS HIDDEN TO OUTPUT:\n", self.weights_hidden_to_output)
         # TODO: Calculate the hidden layer's contribution to the error
         # MARK: CODE WRITTEN, NOT TESTED YET
         hidden_error = np.dot(self.weights_hidden_to_output, output_error_term)
         
-        print("HIDDEN ERROR\n\n", hidden_error)
+#         print("HIDDEN ERROR\n\n", hidden_error)
         
 #         # TODO: Backpropagated error terms - Replace these values with your calculations.
 #         # MARK: CODE WRITTEN, NOT TESTED YET
@@ -137,15 +139,16 @@ class NeuralNetwork(object):
         # Weight step (hidden to output)
         # MARK: CODE WRITTEN, NOT TESTED YET
         
-        
-        
+#         print("OUTPUT_ERROR_TERM: \n\n", output_error_term)
+#         print("HIDDEN OUTPUTS: \n\n", hidden_outputs)
+        delta_weights_h_o_step = output_error_term * hidden_outputs[:,None]
+#         print("STEP: \n\n", delta_weights_h_o_step)
+#         print("DELTA H_O \n\n", delta_weights_h_o)
+        delta_weights_h_o += delta_weights_h_o_step 
+        print("HIDDEN ERROR TERM \n\n", hidden_error_term)
+        print("X[:, None]\n\n", X[:, None])
+        print("DELTA_WEIGHTS_INPUT_HIDDEN\n\n", delta_weights_i_h) 
         print("DELTA_WEIGHTS_HIDDEN_OUTPUT: \n\n", delta_weights_h_o)
-        print("OUTPUT_ERROR_TERM: \n\n", output_error_term)
-        print("HIDDEN OUTPUTS: \n\n", hidden_outputs)
-        delta_weights_h_o_step = output_error_term * hidden_outputs
-        print("STEP: \n\n", np.matrix(delta_weights_h_o_step).T)
-        delta_weights_h_o += np.matrix(delta_weights_h_o_step).T # MARK: RESHAPED THIS TO ADD CORRECTLY....
-        
         return delta_weights_i_h, delta_weights_h_o
 
     def update_weights(self, delta_weights_i_h, delta_weights_h_o, n_records):
@@ -180,8 +183,8 @@ class NeuralNetwork(object):
         final_inputs = np.dot(hidden_outputs, self.weights_hidden_to_output) # signals into final output layer
         # MARK: Why is this correct? And why don't we run the activation function on it?
         final_outputs = final_inputs # signals from final output layer 
-        print("FINAL INPUTS: \n\n", final_inputs)
-        print("HIT THIS FINAL OUTPUT: \n\n", final_outputs)
+#         print("FINAL INPUTS: \n\n", final_inputs)
+#         print("HIT THIS FINAL OUTPUT: \n\n", final_outputs)
         return final_outputs
 
 
@@ -191,4 +194,7 @@ class NeuralNetwork(object):
 iterations = 100
 learning_rate = 0.1
 hidden_nodes = 2
+# iterations = 1000
+# learning_rate = 0.2
+# hidden_nodes = 7
 output_nodes = 1
