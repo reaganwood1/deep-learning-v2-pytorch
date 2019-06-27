@@ -17,7 +17,6 @@ class NeuralNetwork(object):
         self.lr = learning_rate
         
         #### TODO: Set self.activation_function to your implemented sigmoid function ####
-        #### MARK: CODE WRITTEN, NOT TESTED
         #
         # Note: in Python, you can define a function with a lambda expression,
         # as shown below.
@@ -46,10 +45,6 @@ class NeuralNetwork(object):
         delta_weights_i_h = np.zeros(self.weights_input_to_hidden.shape)
         delta_weights_h_o = np.zeros(self.weights_hidden_to_output.shape)
         
-        # MARK: just added these prints to see what the features look like..
-#         print("FEATURES: \n", features)
-#         print("TARGETS: \n", targets)
-        
         for X, y in zip(features, targets):
             
             final_outputs, hidden_outputs = self.forward_pass_train(X)  # Implement the forward pass function below
@@ -75,11 +70,9 @@ class NeuralNetwork(object):
         
         # MARK: should use the sigmoid function to normalize ethe data here, these are now the features for the next
         # MARK: set of weights
-        # MARK: CODE WRITTEN, NOT TESTED
         hidden_outputs = self.activation_function(hidden_inputs) # signals from hidden layer
 
         # TODO: Output layer - Replace these values with your calculations.
-        # MARK: CODE WRITTEN, NOT TESTED
         final_inputs = np.dot(hidden_outputs, self.weights_hidden_to_output) # signals into final output layer
         final_outputs = final_inputs # signals from final output layer
         
@@ -101,55 +94,30 @@ class NeuralNetwork(object):
         
         # TODO: Output error - Replace this value with your calculations.
         # MARK: I think this is (y - output)
-        # MARK: CODE WRITTEN, NOT TESTED YET
         error = y - final_outputs # Output layer error is the difference between desired target and actual output.
-#         print("FINAL OUTPUT: \n\n", final_outputs)
-#         print("WHAT WE WANTED\n\n", y)
-#         print("ERROR\n\n", error)
         # TODO: Backpropagated error terms - Replace these values with your calculations.
         # ERROR TERM FORMULA: δo =(y− y^)f′(W⋅a)
         # a: Sigmoid Activation function
-        # sigmoid function derivative = sigmoid`(x) = sigmoid`(x) * (1 - sigmoid`(x))
-        # MARK: CODE WRITTEN, NOT TESTED YET
-#         print("ERROR", error, "\n\n")
-#         print("FINAL OUTPUTS", final_outputs, "\n\n")
-#         print("DESIRED VALUE", y, "\n\n")
+        # sigmoid function derivative = sigmoid`(x) = sigmoid`(x) * (1 - sigmoid`(x)) -- in this case though
+        # f`(W*a) is 1 because the data is regression.
         derivative_weights_final_output = error
-#         print("DERIVATIVE WEIGHTS FINAL OUTPUT", derivative_weights_final_output, "\n\n\n") 
          
-    # derivative is just 1
         output_error_term = error * 1
         
-#         print("OUTPUT ERROR TERM:\n", output_error_term)
-#         print("WEIGHTS HIDDEN TO OUTPUT:\n", self.weights_hidden_to_output)
         # TODO: Calculate the hidden layer's contribution to the error
-        # MARK: CODE WRITTEN, NOT TESTED YET
         hidden_error = np.dot(self.weights_hidden_to_output, output_error_term)
         
-#         print("HIDDEN ERROR\n\n", hidden_error)
         
 #         # TODO: Backpropagated error terms - Replace these values with your calculations.
-#         # MARK: CODE WRITTEN, NOT TESTED YET
-#         output_error_term = error * output * (1 - output)
-        # MARK: CODE WRITTEN, NOT TESTED YET
         hidden_error_term = hidden_error * hidden_outputs * (1 - hidden_outputs)
         
         # Weight step (input to hidden)
-        # MARK: CODE WRITTEN, NOT TESTED YET
         delta_weights_i_h += hidden_error_term * X[:, None]
         # Weight step (hidden to output)
-        # MARK: CODE WRITTEN, NOT TESTED YET
         
-#         print("OUTPUT_ERROR_TERM: \n\n", output_error_term)
-#         print("HIDDEN OUTPUTS: \n\n", hidden_outputs)
         delta_weights_h_o_step = output_error_term * hidden_outputs[:,None]
-#         print("STEP: \n\n", delta_weights_h_o_step)
-#         print("DELTA H_O \n\n", delta_weights_h_o)
         delta_weights_h_o += delta_weights_h_o_step 
-#         print("HIDDEN ERROR TERM \n\n", hidden_error_term)
-#         print("X[:, None]\n\n", X[:, None])
-#         print("DELTA_WEIGHTS_INPUT_HIDDEN\n\n", delta_weights_i_h) 
-#         print("DELTA_WEIGHTS_HIDDEN_OUTPUT: \n\n", delta_weights_h_o)
+
         return delta_weights_i_h, delta_weights_h_o
 
     def update_weights(self, delta_weights_i_h, delta_weights_h_o, n_records):
@@ -164,10 +132,7 @@ class NeuralNetwork(object):
         '''
         self.weights_hidden_to_output += self.lr * delta_weights_h_o / n_records # update hidden-to-output weights with gradient descent step
         
-        # MARK: CODE WRITTEN, NOT TESTED YET
         self.weights_input_to_hidden += self.lr * delta_weights_i_h / n_records  # update input-to-hidden weights with gradient descent step
-#         print("WEIGHT_INPUT_TO_HIDDEN\n", self.weights_input_to_hidden)
-#         print("WEIGHT_HIDDEN_TO_OUTPUT\n", self.weights_hidden_to_output)
 
     def run(self, features):
         ''' Run a forward pass through the network with input features 
@@ -185,9 +150,9 @@ class NeuralNetwork(object):
         # TODO: Output layer - Replace these values with the appropriate calculations.
         final_inputs = np.dot(hidden_outputs, self.weights_hidden_to_output) # signals into final output layer
         # MARK: Why is this correct? And why don't we run the activation function on it?
+        # MARK: Answer found: final output is regression so we shouldn't normalize the data, makes sense
         final_outputs = final_inputs # signals from final output layer 
-#         print("FINAL INPUTS: \n\n", final_inputs)
-#         print("HIT THIS FINAL OUTPUT: \n\n", final_outputs)
+
         return final_outputs
 
 
