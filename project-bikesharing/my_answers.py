@@ -105,7 +105,7 @@ class NeuralNetwork(object):
         error = y - final_outputs # Output layer error is the difference between desired target and actual output.
 #         print("FINAL OUTPUT: \n\n", final_outputs)
 #         print("WHAT WE WANTED\n\n", y)
-        print("ERROR\n\n", error)
+#         print("ERROR\n\n", error)
         # TODO: Backpropagated error terms - Replace these values with your calculations.
         # ERROR TERM FORMULA: δo =(y− y^)f′(W⋅a)
         # a: Sigmoid Activation function
@@ -166,8 +166,8 @@ class NeuralNetwork(object):
         
         # MARK: CODE WRITTEN, NOT TESTED YET
         self.weights_input_to_hidden += self.lr * delta_weights_i_h / n_records  # update input-to-hidden weights with gradient descent step
-        print("WEIGHT_INPUT_TO_HIDDEN\n", self.weights_input_to_hidden)
-        print("WEIGHT_HIDDEN_TO_OUTPUT\n", self.weights_hidden_to_output)
+#         print("WEIGHT_INPUT_TO_HIDDEN\n", self.weights_input_to_hidden)
+#         print("WEIGHT_HIDDEN_TO_OUTPUT\n", self.weights_hidden_to_output)
 
     def run(self, features):
         ''' Run a forward pass through the network with input features 
@@ -194,7 +194,9 @@ class NeuralNetwork(object):
 #########################################################
 # Set your hyperparameters here
 ##########################################################
-iterations = 100
-learning_rate = .1
-hidden_nodes = 2
+iterations = 7000
+learning_rate = .7
+hidden_nodes = 13
 output_nodes = 1
+
+
